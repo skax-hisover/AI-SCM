@@ -1,34 +1,34 @@
-# FastAPI Project - Development
+# FastAPI 프로젝트 - 개발
 
 ## Docker Compose
 
-* Start the local stack with Docker Compose:
+* Docker Compose로 로컬 스택을 시작합니다:
 
 ```bash
 docker compose watch
 ```
 
-* Now you can open your browser and interact with these URLs:
+* 이제 브라우저를 열고 다음 URL들에 접근할 수 있습니다:
 
-Frontend, built with Docker, with routes handled based on the path: <http://localhost:5173>
+프론트엔드, Docker로 빌드되며 경로 기반으로 라우트 처리: <http://localhost:5173>
 
-Backend, JSON based web API based on OpenAPI: <http://localhost:8000>
+백엔드, OpenAPI 기반 JSON 웹 API: <http://localhost:8000>
 
-Automatic interactive documentation with Swagger UI (from the OpenAPI backend): <http://localhost:8000/docs>
+Swagger UI를 사용한 자동 인터랙티브 문서 (OpenAPI 백엔드 기반): <http://localhost:8000/docs>
 
-Adminer, database web administration: <http://localhost:8080>
+Adminer, 데이터베이스 웹 관리 도구: <http://localhost:8080>
 
-Traefik UI, to see how the routes are being handled by the proxy: <http://localhost:8090>
+Traefik UI, 프록시가 라우트를 어떻게 처리하는지 확인: <http://localhost:8090>
 
-**Note**: The first time you start your stack, it might take a minute for it to be ready. While the backend waits for the database to be ready and configures everything. You can check the logs to monitor it.
+**참고**: 스택을 처음 시작할 때는 준비되기까지 잠시 시간이 걸릴 수 있습니다. 백엔드가 데이터베이스가 준비될 때까지 기다리고 모든 설정을 구성하기 때문입니다. 로그를 확인하여 모니터링할 수 있습니다.
 
-To check the logs, run (in another terminal):
+로그를 확인하려면 (다른 터미널에서) 다음을 실행합니다:
 
 ```bash
 docker compose logs
 ```
 
-To check the logs of a specific service, add the name of the service, e.g.:
+특정 서비스의 로그를 확인하려면 서비스 이름을 추가합니다. 예:
 
 ```bash
 docker compose logs backend
@@ -36,137 +36,137 @@ docker compose logs backend
 
 ## Mailcatcher
 
-Mailcatcher is a simple SMTP server that catches all emails sent by the backend during local development. Instead of sending real emails, they are captured and displayed in a web interface.
+Mailcatcher는 로컬 개발 중 백엔드에서 보내는 모든 이메일을 캡처하는 간단한 SMTP 서버입니다. 실제 이메일을 보내는 대신, 캡처되어 웹 인터페이스에 표시됩니다.
 
-This is useful for:
+다음과 같은 용도로 유용합니다:
 
-* Testing email functionality during development
-* Verifying email content and formatting
-* Debugging email-related functionality without sending real emails
+* 개발 중 이메일 기능 테스트
+* 이메일 내용 및 형식 확인
+* 실제 이메일을 보내지 않고 이메일 관련 기능 디버깅
 
-The backend is automatically configured to use Mailcatcher when running with Docker Compose locally (SMTP on port 1025). All captured emails can be viewed at <http://localhost:1080>.
+백엔드는 Docker Compose로 로컬에서 실행할 때 자동으로 Mailcatcher를 사용하도록 설정됩니다 (SMTP 포트 1025). 캡처된 모든 이메일은 <http://localhost:1080>에서 확인할 수 있습니다.
 
-## Local Development
+## 로컬 개발
 
-The Docker Compose files are configured so that each of the services is available in a different port in `localhost`.
+Docker Compose 파일은 각 서비스가 `localhost`의 다른 포트에서 사용 가능하도록 설정되어 있습니다.
 
-For the backend and frontend, they use the same port that would be used by their local development server, so, the backend is at `http://localhost:8000` and the frontend at `http://localhost:5173`.
+백엔드와 프론트엔드의 경우, 로컬 개발 서버에서 사용하는 것과 동일한 포트를 사용합니다. 따라서 백엔드는 `http://localhost:8000`에서, 프론트엔드는 `http://localhost:5173`에서 접근할 수 있습니다.
 
-This way, you could turn off a Docker Compose service and start its local development service, and everything would keep working, because it all uses the same ports.
+이렇게 하면 Docker Compose 서비스를 중지하고 로컬 개발 서버를 시작해도 동일한 포트를 사용하므로 모든 것이 계속 작동합니다.
 
-For example, you can stop that `frontend` service in the Docker Compose, in another terminal, run:
+예를 들어, Docker Compose에서 `frontend` 서비스를 중지할 수 있습니다. 다른 터미널에서 다음을 실행합니다:
 
 ```bash
 docker compose stop frontend
 ```
 
-And then start the local frontend development server:
+그런 다음 로컬 프론트엔드 개발 서버를 시작합니다:
 
 ```bash
 bun run dev
 ```
 
-Or you could stop the `backend` Docker Compose service:
+또는 `backend` Docker Compose 서비스를 중지할 수 있습니다:
 
 ```bash
 docker compose stop backend
 ```
 
-And then you can run the local development server for the backend:
+그런 다음 백엔드용 로컬 개발 서버를 실행할 수 있습니다:
 
 ```bash
 cd backend
 fastapi dev app/main.py
 ```
 
-## Docker Compose in `localhost.tiangolo.com`
+## `localhost.tiangolo.com`에서의 Docker Compose
 
-When you start the Docker Compose stack, it uses `localhost` by default, with different ports for each service (backend, frontend, adminer, etc).
+Docker Compose 스택을 시작하면 기본적으로 `localhost`를 사용하며, 각 서비스(백엔드, 프론트엔드, adminer 등)에 대해 다른 포트를 사용합니다.
 
-When you deploy it to production (or staging), it will deploy each service in a different subdomain, like `api.example.com` for the backend and `dashboard.example.com` for the frontend.
+프로덕션(또는 스테이징)에 배포하면 각 서비스가 서로 다른 서브도메인에 배포됩니다. 예: 백엔드는 `api.example.com`, 프론트엔드는 `dashboard.example.com`.
 
-In the guide about [deployment](deployment.md) you can read about Traefik, the configured proxy. That's the component in charge of transmitting traffic to each service based on the subdomain.
+[배포](deployment.md) 가이드에서 설정된 프록시인 Traefik에 대해 읽을 수 있습니다. 이것이 서브도메인에 따라 각 서비스로 트래픽을 전송하는 역할을 하는 컴포넌트입니다.
 
-If you want to test that it's all working locally, you can edit the local `.env` file, and change:
+로컬에서 모든 것이 제대로 작동하는지 테스트하려면 로컬 `.env` 파일을 편집하고 다음을 변경할 수 있습니다:
 
 ```dotenv
 DOMAIN=localhost.tiangolo.com
 ```
 
-That will be used by the Docker Compose files to configure the base domain for the services.
+이것은 Docker Compose 파일에서 서비스의 기본 도메인을 설정하는 데 사용됩니다.
 
-Traefik will use this to transmit traffic at `api.localhost.tiangolo.com` to the backend, and traffic at `dashboard.localhost.tiangolo.com` to the frontend.
+Traefik은 이를 사용하여 `api.localhost.tiangolo.com`의 트래픽을 백엔드로, `dashboard.localhost.tiangolo.com`의 트래픽을 프론트엔드로 전송합니다.
 
-The domain `localhost.tiangolo.com` is a special domain that is configured (with all its subdomains) to point to `127.0.0.1`. This way you can use that for your local development.
+`localhost.tiangolo.com` 도메인은 모든 서브도메인이 `127.0.0.1`을 가리키도록 설정된 특별한 도메인입니다. 이렇게 하면 로컬 개발에 사용할 수 있습니다.
 
-After you update it, run again:
-
-```bash
-docker compose watch
-```
-
-When deploying, for example in production, the main Traefik is configured outside of the Docker Compose files. For local development, there's an included Traefik in `compose.override.yml`, just to let you test that the domains work as expected, for example with `api.localhost.tiangolo.com` and `dashboard.localhost.tiangolo.com`.
-
-## Docker Compose files and env vars
-
-There is a main `compose.yml` file with all the configurations that apply to the whole stack, it is used automatically by `docker compose`.
-
-And there's also a `compose.override.yml` with overrides for development, for example to mount the source code as a volume. It is used automatically by `docker compose` to apply overrides on top of `compose.yml`.
-
-These Docker Compose files use the `.env` file containing configurations to be injected as environment variables in the containers.
-
-They also use some additional configurations taken from environment variables set in the scripts before calling the `docker compose` command.
-
-After changing variables, make sure you restart the stack:
+업데이트한 후 다시 실행합니다:
 
 ```bash
 docker compose watch
 ```
 
-## The .env file
+배포할 때, 예를 들어 프로덕션에서는 메인 Traefik이 Docker Compose 파일 외부에서 설정됩니다. 로컬 개발의 경우, `compose.override.yml`에 포함된 Traefik이 있어 `api.localhost.tiangolo.com` 및 `dashboard.localhost.tiangolo.com`과 같이 도메인이 예상대로 작동하는지 테스트할 수 있습니다.
 
-The `.env` file is the one that contains all your configurations, generated keys and passwords, etc.
+## Docker Compose 파일 및 환경 변수
 
-Depending on your workflow, you could want to exclude it from Git, for example if your project is public. In that case, you would have to make sure to set up a way for your CI tools to obtain it while building or deploying your project.
+전체 스택에 적용되는 모든 설정이 포함된 메인 `compose.yml` 파일이 있으며, `docker compose`에서 자동으로 사용됩니다.
 
-One way to do it could be to add each environment variable to your CI/CD system, and updating the `compose.yml` file to read that specific env var instead of reading the `.env` file.
+그리고 개발용 오버라이드가 있는 `compose.override.yml`도 있습니다. 예를 들어 소스 코드를 볼륨으로 마운트합니다. `docker compose`에서 자동으로 사용되어 `compose.yml` 위에 오버라이드를 적용합니다.
 
-## Pre-commits and code linting
+이러한 Docker Compose 파일은 컨테이너에 환경 변수로 주입될 설정이 포함된 `.env` 파일을 사용합니다.
 
-we are using a tool called [prek](https://prek.j178.dev/) (modern alternative to [Pre-commit](https://pre-commit.com/)) for code linting and formatting.
+또한 `docker compose` 명령을 호출하기 전에 스크립트에서 설정된 환경 변수에서 가져온 추가 설정도 사용합니다.
 
-When you install it, it runs right before making a commit in git. This way it ensures that the code is consistent and formatted even before it is committed.
+변수를 변경한 후에는 스택을 다시 시작해야 합니다:
 
-You can find a file `.pre-commit-config.yaml` with configurations at the root of the project.
+```bash
+docker compose watch
+```
 
-#### Install prek to run automatically
+## .env 파일
 
-`prek` is already part of the dependencies of the project.
+`.env` 파일은 모든 설정, 생성된 키 및 비밀번호 등이 포함된 파일입니다.
 
-After having the `prek` tool installed and available, you need to "install" it in the local repository, so that it runs automatically before each commit.
+워크플로우에 따라 Git에서 제외하고 싶을 수 있습니다. 예를 들어 프로젝트가 공개인 경우입니다. 이 경우 CI 도구가 프로젝트를 빌드하거나 배포하는 동안 이를 얻을 수 있는 방법을 설정해야 합니다.
 
-Using `uv`, you could do it with (make sure you are inside `backend` folder):
+한 가지 방법은 각 환경 변수를 CI/CD 시스템에 추가하고 `compose.yml` 파일을 업데이트하여 `.env` 파일을 읽는 대신 해당 특정 환경 변수를 읽도록 하는 것입니다.
+
+## Pre-commit 및 코드 린팅
+
+코드 린팅 및 포맷팅을 위해 [prek](https://prek.j178.dev/)([Pre-commit](https://pre-commit.com/)의 현대적 대안)라는 도구를 사용합니다.
+
+설치하면 git에서 커밋하기 직전에 실행됩니다. 이렇게 하면 코드가 커밋되기 전에도 일관되고 포맷이 맞춰집니다.
+
+프로젝트 루트에서 설정이 포함된 `.pre-commit-config.yaml` 파일을 찾을 수 있습니다.
+
+#### prek을 자동으로 실행하도록 설치
+
+`prek`은 이미 프로젝트의 종속성에 포함되어 있습니다.
+
+`prek` 도구가 설치되어 사용 가능한 상태에서, 로컬 저장소에 "설치"해야 각 커밋 전에 자동으로 실행됩니다.
+
+`uv`를 사용하면 다음과 같이 할 수 있습니다 (`backend` 폴더 내에 있는지 확인하세요):
 
 ```bash
 ❯ uv run prek install -f
 prek installed at `../.git/hooks/pre-commit`
 ```
 
-The `-f` flag forces the installation, in case there was already a `pre-commit` hook previously installed.
+`-f` 플래그는 이전에 `pre-commit` 훅이 이미 설치되어 있는 경우 강제로 설치합니다.
 
-Now whenever you try to commit, e.g. with:
+이제 커밋할 때마다, 예:
 
 ```bash
 git commit
 ```
 
-...prek will run and check and format the code you are about to commit, and will ask you to add that code (stage it) with git again before committing.
+...prek이 실행되어 커밋하려는 코드를 검사하고 포맷팅하며, 커밋하기 전에 해당 코드를 git으로 다시 추가(스테이징)하라고 요청합니다.
 
-Then you can `git add` the modified/fixed files again and now you can commit.
+그런 다음 수정/고정된 파일을 다시 `git add`하면 이제 커밋할 수 있습니다.
 
-#### Running prek hooks manually
+#### prek 훅 수동 실행
 
-you can also run `prek` manually on all the files, you can do it using `uv` with:
+모든 파일에 대해 `prek`을 수동으로 실행할 수도 있습니다. `uv`를 사용하여 다음과 같이 할 수 있습니다:
 
 ```bash
 ❯ uv run prek run --all-files
@@ -180,21 +180,21 @@ ruff-format..............................................................Passed
 biome check..............................................................Passed
 ```
 
-## URLs
+## URL
 
-The production or staging URLs would use these same paths, but with your own domain.
+프로덕션 또는 스테이징 URL은 동일한 경로를 사용하지만 자신의 도메인을 사용합니다.
 
-### Development URLs
+### 개발 URL
 
-Development URLs, for local development.
+로컬 개발용 개발 URL입니다.
 
-Frontend: <http://localhost:5173>
+프론트엔드: <http://localhost:5173>
 
-Backend: <http://localhost:8000>
+백엔드: <http://localhost:8000>
 
-Automatic Interactive Docs (Swagger UI): <http://localhost:8000/docs>
+자동 인터랙티브 문서 (Swagger UI): <http://localhost:8000/docs>
 
-Automatic Alternative Docs (ReDoc): <http://localhost:8000/redoc>
+자동 대체 문서 (ReDoc): <http://localhost:8000/redoc>
 
 Adminer: <http://localhost:8080>
 
@@ -202,17 +202,17 @@ Traefik UI: <http://localhost:8090>
 
 MailCatcher: <http://localhost:1080>
 
-### Development URLs with `localhost.tiangolo.com` Configured
+### `localhost.tiangolo.com` 설정 시 개발 URL
 
-Development URLs, for local development.
+로컬 개발용 개발 URL입니다.
 
-Frontend: <http://dashboard.localhost.tiangolo.com>
+프론트엔드: <http://dashboard.localhost.tiangolo.com>
 
-Backend: <http://api.localhost.tiangolo.com>
+백엔드: <http://api.localhost.tiangolo.com>
 
-Automatic Interactive Docs (Swagger UI): <http://api.localhost.tiangolo.com/docs>
+자동 인터랙티브 문서 (Swagger UI): <http://api.localhost.tiangolo.com/docs>
 
-Automatic Alternative Docs (ReDoc): <http://api.localhost.tiangolo.com/redoc>
+자동 대체 문서 (ReDoc): <http://api.localhost.tiangolo.com/redoc>
 
 Adminer: <http://localhost.tiangolo.com:8080>
 

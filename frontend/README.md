@@ -1,121 +1,121 @@
-# FastAPI Project - Frontend
+# FastAPI 프로젝트 - 프론트엔드
 
-The frontend is built with [Vite](https://vitejs.dev/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router) and [Tailwind CSS](https://tailwindcss.com/).
+프론트엔드는 [Vite](https://vitejs.dev/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router) 및 [Tailwind CSS](https://tailwindcss.com/)로 빌드되었습니다.
 
-## Requirements
+## 요구 사항
 
-- [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/)
+- [Bun](https://bun.sh/) (권장) 또는 [Node.js](https://nodejs.org/)
 
-## Quick Start
+## 빠른 시작
 
 ```bash
 bun install
 bun run dev
 ```
 
-* Then open your browser at http://localhost:5173/.
+* 그런 다음 브라우저에서 http://localhost:5173/을 엽니다.
 
-Notice that this live server is not running inside Docker, it's for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But building the image at every change will not be as productive as running the local development server with live reload.
+이 실시간 서버는 Docker 내부에서 실행되지 않으며, 로컬 개발용입니다. 이것이 권장되는 워크플로우입니다. 프론트엔드에 만족하면 프론트엔드 Docker 이미지를 빌드하고 시작하여 프로덕션과 유사한 환경에서 테스트할 수 있습니다. 하지만 변경할 때마다 이미지를 빌드하는 것은 실시간 리로드가 있는 로컬 개발 서버를 실행하는 것만큼 생산적이지 않습니다.
 
-Check the file `package.json` to see other available options.
+다른 사용 가능한 옵션은 `package.json` 파일을 확인하세요.
 
-### Removing the frontend
+### 프론트엔드 제거
 
-If you are developing an API-only app and want to remove the frontend, you can do it easily:
+API 전용 앱을 개발하고 프론트엔드를 제거하고 싶다면 쉽게 할 수 있습니다:
 
-* Remove the `./frontend` directory.
+* `./frontend` 디렉터리를 제거합니다.
 
-* In the `compose.yml` file, remove the whole service / section `frontend`.
+* `compose.yml` 파일에서 `frontend` 서비스 / 섹션 전체를 제거합니다.
 
-* In the `compose.override.yml` file, remove the whole service / section `frontend` and `playwright`.
+* `compose.override.yml` 파일에서 `frontend` 및 `playwright` 서비스 / 섹션 전체를 제거합니다.
 
-Done, you have a frontend-less (api-only) app. 🤓
+완료, 프론트엔드 없는 (API 전용) 앱이 되었습니다. 🤓
 
 ---
 
-If you want, you can also remove the `FRONTEND` environment variables from:
+원한다면 다음에서 `FRONTEND` 환경 변수도 제거할 수 있습니다:
 
 * `.env`
 * `./scripts/*.sh`
 
-But it would be only to clean them up, leaving them won't really have any effect either way.
+하지만 이는 정리를 위한 것일 뿐이며, 남겨두어도 어차피 아무런 영향이 없습니다.
 
-## Generate Client
+## 클라이언트 생성
 
-### Automatically
+### 자동으로
 
-* Activate the backend virtual environment.
-* From the top level project directory, run the script:
+* 백엔드 가상 환경을 활성화합니다.
+* 최상위 프로젝트 디렉터리에서 스크립트를 실행합니다:
 
 ```bash
 bash ./scripts/generate-client.sh
 ```
 
-* Commit the changes.
+* 변경 사항을 커밋합니다.
 
-### Manually
+### 수동으로
 
-* Start the Docker Compose stack.
+* Docker Compose 스택을 시작합니다.
 
-* Download the OpenAPI JSON file from `http://localhost/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
+* `http://localhost/api/v1/openapi.json`에서 OpenAPI JSON 파일을 다운로드하고 `frontend` 디렉터리 루트에 새 파일 `openapi.json`으로 복사합니다.
 
-* To generate the frontend client, run:
+* 프론트엔드 클라이언트를 생성하려면 다음을 실행합니다:
 
 ```bash
 bun run generate-client
 ```
 
-* Commit the changes.
+* 변경 사항을 커밋합니다.
 
-Notice that everytime the backend changes (changing the OpenAPI schema), you should follow these steps again to update the frontend client.
+백엔드가 변경될 때마다 (OpenAPI 스키마 변경), 프론트엔드 클라이언트를 업데이트하기 위해 이 단계를 다시 따라야 합니다.
 
-## Using a Remote API
+## 원격 API 사용
 
-If you want to use a remote API, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
+원격 API를 사용하고 싶다면 환경 변수 `VITE_API_URL`을 원격 API의 URL로 설정할 수 있습니다. 예를 들어, `frontend/.env` 파일에서 설정할 수 있습니다:
 
 ```env
 VITE_API_URL=https://api.my-domain.example.com
 ```
 
-Then, when you run the frontend, it will use that URL as the base URL for the API.
+그러면 프론트엔드를 실행할 때 해당 URL을 API의 기본 URL로 사용합니다.
 
-## Code Structure
+## 코드 구조
 
-The frontend code is structured as follows:
+프론트엔드 코드는 다음과 같이 구성되어 있습니다:
 
-* `frontend/src` - The main frontend code.
-* `frontend/src/assets` - Static assets.
-* `frontend/src/client` - The generated OpenAPI client.
-* `frontend/src/components` -  The different components of the frontend.
-* `frontend/src/hooks` - Custom hooks.
-* `frontend/src/routes` - The different routes of the frontend which include the pages.
+* `frontend/src` - 메인 프론트엔드 코드.
+* `frontend/src/assets` - 정적 자산.
+* `frontend/src/client` - 생성된 OpenAPI 클라이언트.
+* `frontend/src/components` - 프론트엔드의 다양한 컴포넌트.
+* `frontend/src/hooks` - 커스텀 훅.
+* `frontend/src/routes` - 페이지를 포함하는 프론트엔드의 다양한 라우트.
 
-## End-to-End Testing with Playwright
+## Playwright를 사용한 E2E 테스트
 
-The frontend includes initial end-to-end tests using Playwright. To run the tests, you need to have the Docker Compose stack running. Start the stack with the following command:
+프론트엔드에는 Playwright를 사용한 초기 E2E(End-to-End) 테스트가 포함되어 있습니다. 테스트를 실행하려면 Docker Compose 스택이 실행 중이어야 합니다. 다음 명령으로 스택을 시작합니다:
 
 ```bash
 docker compose up -d --wait backend
 ```
 
-Then, you can run the tests with the following command:
+그런 다음 다음 명령으로 테스트를 실행할 수 있습니다:
 
 ```bash
 bunx playwright test
 ```
 
-You can also run your tests in UI mode to see the browser and interact with it running:
+브라우저를 보고 상호 작용할 수 있는 UI 모드에서 테스트를 실행할 수도 있습니다:
 
 ```bash
 bunx playwright test --ui
 ```
 
-To stop and remove the Docker Compose stack and clean the data created in tests, use the following command:
+Docker Compose 스택을 중지 및 제거하고 테스트에서 생성된 데이터를 정리하려면 다음 명령을 사용합니다:
 
 ```bash
 docker compose down -v
 ```
 
-To update the tests, navigate to the tests directory and modify the existing test files or add new ones as needed.
+테스트를 업데이트하려면 tests 디렉터리로 이동하여 기존 테스트 파일을 수정하거나 필요에 따라 새 파일을 추가합니다.
 
-For more information on writing and running Playwright tests, refer to the official [Playwright documentation](https://playwright.dev/docs/intro).
+Playwright 테스트 작성 및 실행에 대한 자세한 내용은 공식 [Playwright 문서](https://playwright.dev/docs/intro)를 참조하세요.
